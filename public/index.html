@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="StudentSpend — Track pocket money, expenses and savings for students in Pakistan. Your money. Your control." />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>StudentSpend — Your money. Your control.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- Toast container -->
+  <div id="toast-container" class="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- ==================== LANDING ==================== -->
+  <div id="landing" class="landing hidden">
+    <header class="landing-header">
+      <div class="logo">
+        <span class="logo-mark">S</span>
+        <span class="logo-text">StudentSpend</span>
+      </div>
+      <nav class="landing-nav">
+        <a href="#features" class="nav-link">Features</a>
+        <button type="button" class="btn btn-ghost" data-action="show-login">Log in</button>
+        <button type="button" class="btn btn-primary" data-action="show-signup">Get started</button>
+      </nav>
+      <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-eyebrow animate-on-load">Built for students in Pakistan</p>
+        <h1 class="hero-title animate-on-load">
+          Your money.<br /><span class="gradient-text">Your control.</span>
+        </h1>
+        <p class="hero-sub animate-on-load">
+          Track pocket money, expenses and savings without the spreadsheet headache.
+        </p>
+        <div class="hero-actions animate-on-load">
+          <button type="button" class="btn btn-primary btn-lg" data-action="show-signup">Start Tracking</button>
+          <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
+        </div>
+      </div>
+      <div class="hero-preview animate-on-load">
+        <div class="preview-card glass">
+          <div class="preview-header">
+            <span class="preview-label">Available Balance</span>
+            <span class="preview-badge">Live</span>
+          </div>
+          <div class="preview-balance" data-count="6750">₨ 0</div>
+          <div class="preview-stats">
+            <div>
+              <span class="stat-label">Income</span>
+              <span class="stat-value income">₨ 15,000</span>
+            </div>
+            <div>
+              <span class="stat-label">Spent</span>
+              <span class="stat-value expense">₨ 8,250</span>
+            </div>
+          </div>
+        </div>
+        <div class="float-card float-1 glass">
+          <span class="tx-icon">🍔</span>
+          <div>
+            <strong>Food</strong>
+            <small>Today · Cash</small>
+          </div>
+          <span class="tx-amount expense">- ₨500</span>
+        </div>
+        <div class="float-card float-2 glass">
+          <span class="tx-icon">💰</span>
+          <div>
+            <strong>Pocket Money</strong>
+            <small>Sep 1 · Bank</small>
+          </div>
+          <span class="tx-amount income">+ ₨10,000</span>
+        </div>
+        <div class="float-card float-3 glass">
+          <span class="tx-icon">🚌</span>
+          <div>
+            <strong>Transport</strong>
+            <small>Yesterday</small>
+          </div>
+          <span class="tx-amount expense">- ₨300</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="section-header">
+        <h2 class="section-title">Everything you need to stay on top of your money</h2>
+        <p class="section-sub">Designed for Pakistani students — simple, fast, and in PKR.</p>
+      </div>
+      <div class="features-grid">
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">🇵🇰</div>
+          <h3>PKR First</h3>
+          <p>Designed specifically around Pakistani students and the rupee.</p>
+        </article>
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">🎯</div>
+          <h3>Smart Budgeting</h3>
+          <p>Set monthly spending limits and see remaining budget in real time.</p>
+        </article>
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">📊</div>
+          <h3>Spending Analytics</h3>
+          <p>Understand where money goes with clear charts and category breakdowns.</p>
+        </article>
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">⚡</div>
+          <h3>Quick Transactions</h3>
+          <p>Add expenses or income in seconds — no complicated forms.</p>
+        </article>
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">🏷️</div>
+          <h3>Student Categories</h3>
+          <p>Food, transport, education, pocket money, subscriptions and more.</p>
+        </article>
+        <article class="feature-card glass" data-animate>
+          <div class="feature-icon">🤖</div>
+          <h3>AI Financial Insights</h3>
+          <p>AI analyzes spending patterns and offers useful, non-judgmental tips.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      <div class="logo">
+        <span class="logo-mark">S</span>
+        <span class="logo-text">StudentSpend</span>
+      </div>
+      <p>Your money. Your control. · Made for students in Pakistan</p>
+    </footer>
+  </div>
+
+  <!-- ==================== AUTH MODALS ==================== -->
+  <div id="auth-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="modal glass auth-modal">
+      <button type="button" class="modal-close" data-action="close-auth" aria-label="Close">&times;</button>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-tab="login">Log in</button>
+        <button type="button" class="auth-tab" data-tab="signup">Sign up</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <h2 id="auth-title">Welcome back</h2>
+        <p class="auth-sub">Log in to continue tracking your spending.</p>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" required autocomplete="email" placeholder="you@university.edu.pk" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="••••••••" minlength="6" />
+        </div>
+        <p id="login-error" class="form-error hidden" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      </form>
+
+      <form id="signup-form" class="auth-form hidden">
+        <h2>Create account</h2>
+        <p class="auth-sub">Start tracking pocket money in under a minute.</p>
+        <div class="form-group">
+          <label for="signup-name">Full name</label>
+          <input type="text" id="signup-name" name="full_name" required autocomplete="name" placeholder="Ali Khan" />
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" required autocomplete="email" placeholder="you@university.edu.pk" />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" required autocomplete="new-password" placeholder="At least 6 characters" minlength="6" />
+        </div>
+        <p id="signup-error" class="form-error hidden" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== APP SHELL ==================== -->
+  <div id="app" class="app hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-mark">S</span>
+        <span class="logo-text">StudentSpend</span>
+      </div>
+      <nav class="sidebar-nav" aria-label="Main">
+        <button type="button" class="nav-item active" data-page="overview">
+          <span class="nav-icon">◈</span> Overview
+        </button>
+        <button type="button" class="nav-item" data-page="analytics">
+          <span class="nav-icon">◉</span> Analytics
+        </button>
+        <button type="button" class="nav-item" data-page="transactions">
+          <span class="nav-icon">☰</span> Transactions
+        </button>
+        <button type="button" class="nav-item" data-page="budget">
+          <span class="nav-icon">◎</span> Budget
+        </button>
+        <button type="button" class="nav-item" data-page="insights">
+          <span class="nav-icon">✦</span> AI Insights
+        </button>
+        <button type="button" class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙</span> Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button type="button" class="nav-item logout-btn" data-action="logout">
+          <span class="nav-icon">⎋</span> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile bottom nav -->
+    <nav class="bottom-nav" aria-label="Mobile navigation">
+      <button type="button" class="bottom-nav-item active" data-page="overview" aria-label="Overview">
+        <span>◈</span><small>Home</small>
+      </button>
+      <button type="button" class="bottom-nav-item" data-page="analytics" aria-label="Analytics">
+        <span>◉</span><small>Stats</small>
+      </button>
+      <button type="button" class="bottom-nav-item add-fab" data-action="open-expense" aria-label="Add expense">
+        <span>+</span>
+      </button>
+      <button type="button" class="bottom-nav-item" data-page="transactions" aria-label="Transactions">
+        <span>☰</span><small>Txns</small>
+      </button>
+      <button type="button" class="bottom-nav-item" data-page="budget" aria-label="Budget">
+        <span>◎</span><small>Budget</small>
+      </button>
+    </nav>
+
+    <main class="main">
+      <header class="main-header">
+        <div>
+          <h1 class="greeting" id="greeting">Good afternoon 👋</h1>
+          <p class="current-month" id="current-month">September 2026</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-secondary btn-sm" data-action="open-income">+ Income</button>
+          <button type="button" class="btn btn-primary btn-sm" data-action="open-expense">+ Expense</button>
+        </div>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section id="page-overview" class="page active">
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <span class="stat-card-label">Available Balance</span>
+            <span class="stat-card-value" id="stat-balance">₨ 0</span>
+          </div>
+          <div class="stat-card glass">
+            <span class="stat-card-label">Monthly Income</span>
+            <span class="stat-card-value income" id="stat-income">₨ 0</span>
+          </div>
+          <div class="stat-card glass">
+            <span class="stat-card-label">Total Spent</span>
+            <span class="stat-card-value expense" id="stat-spent">₨ 0</span>
+          </div>
+          <div class="stat-card glass">
+            <span class="stat-card-label">Budget Remaining</span>
+            <span class="stat-card-value" id="stat-budget-remaining">₨ 0</span>
+          </div>
+        </div>
+
+        <div class="overview-grid">
+          <div class="panel glass">
+            <div class="panel-header">
+              <h3>Recent Transactions</h3>
+              <button type="button" class="btn btn-ghost btn-sm" data-page="transactions">View all</button>
+            </div>
+            <div id="recent-list" class="tx-list">
+              <div class="empty-state">
+                <p>No transactions yet.</p>
+                <p class="muted">Start tracking your first expense.</p>
+                <button type="button" class="btn btn-primary btn-sm" data-action="open-expense">+ Add Expense</button>
+              </div>
+            </div>
+          </div>
+          <div class="panel glass">
+            <div class="panel-header">
+              <h3>Budget Snapshot</h3>
+            </div>
+            <div id="overview-budget">
+              <div class="empty-state">
+                <p>No budget set.</p>
+                <button type="button" class="btn btn-secondary btn-sm" data-page="budget">Set Budget</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section id="page-analytics" class="page">
+        <div class="analytics-grid">
+          <div class="panel glass chart-panel">
+            <h3>Spending by Category</h3>
+            <div class="chart-wrap">
+              <canvas id="chart-category" aria-label="Spending by category chart"></canvas>
+            </div>
+            <div id="category-legend" class="chart-legend"></div>
+          </div>
+          <div class="panel glass chart-panel">
+            <h3>Monthly Spending</h3>
+            <div class="chart-wrap">
+              <canvas id="chart-monthly" aria-label="Monthly spending chart"></canvas>
+            </div>
+          </div>
+          <div class="panel glass chart-panel full-width">
+            <h3>Income vs Expenses</h3>
+            <div class="chart-wrap">
+              <canvas id="chart-comparison" aria-label="Income vs expenses chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRANSACTIONS -->
+      <section id="page-transactions" class="page">
+        <div class="filters glass">
+          <input type="search" id="tx-search" placeholder="Search description or category…" aria-label="Search transactions" />
+          <select id="tx-filter-type" aria-label="Filter by type">
+            <option value="all">All types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <select id="tx-filter-category" aria-label="Filter by category">
+            <option value="all">All categories</option>
+          </select>
+          <input type="month" id="tx-filter-month" aria-label="Filter by month" />
+        </div>
+        <div id="tx-list" class="tx-list panel glass">
+          <div class="empty-state">
+            <p>No transactions yet.</p>
+            <p class="muted">Start tracking your first expense.</p>
+            <button type="button" class="btn btn-primary btn-sm" data-action="open-expense">+ Add Expense</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUDGET -->
+      <section id="page-budget" class="page">
+        <div class="panel glass budget-panel">
+          <div class="panel-header">
+            <h3 id="budget-month-title">September Budget</h3>
+            <button type="button" class="btn btn-secondary btn-sm" data-action="edit-budget">Edit Budget</button>
+          </div>
+          <div id="budget-content">
+            <div class="empty-state">
+              <p>No budget set for this month.</p>
+              <button type="button" class="btn btn-primary" data-action="edit-budget">Set Monthly Budget</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI INSIGHTS -->
+      <section id="page-insights" class="page">
+        <div class="panel glass insights-panel">
+          <div class="panel-header">
+            <h3>AI-generated spending insights</h3>
+            <button type="button" class="btn btn-secondary btn-sm" id="refresh-insights">Refresh</button>
+          </div>
+          <p class="insights-disclaimer muted">These insights are AI-generated and are not professional financial advice.</p>
+          <div id="insights-content">
+            <div class="empty-state">
+              <p>Add a few transactions and we'll generate your first AI spending insight.</p>
+              <button type="button" class="btn btn-primary btn-sm" data-action="open-expense">+ Add Expense</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="page">
+        <div class="panel glass">
+          <h3>Profile</h3>
+          <div class="settings-row">
+            <span>Name</span>
+            <strong id="settings-name">—</strong>
+          </div>
+          <div class="settings-row">
+            <span>Email</span>
+            <strong id="settings-email">—</strong>
+          </div>
+          <div class="settings-row">
+            <span>Currency</span>
+            <strong>PKR (₨)</strong>
+          </div>
+          <hr class="divider" />
+          <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+  <!-- Expense Modal -->
+  <div id="expense-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="expense-title">
+    <div class="modal glass">
+      <button type="button" class="modal-close" data-action="close-expense" aria-label="Close">&times;</button>
+      <h2 id="expense-title">Add Expense</h2>
+      <form id="expense-form">
+        <input type="hidden" id="expense-id" />
+        <div class="form-group">
+          <label for="expense-amount">Amount (₨)</label>
+          <input type="number" id="expense-amount" min="1" step="1" required placeholder="500" />
+        </div>
+        <div class="form-group">
+          <label for="expense-category">Category</label>
+          <select id="expense-category" required>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Education">Education</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Sports">Sports</option>
+            <option value="Mobile / Internet">Mobile / Internet</option>
+            <option value="Subscriptions">Subscriptions</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="expense-description">Description</label>
+          <input type="text" id="expense-description" placeholder="Lunch, bus fare…" maxlength="120" />
+        </div>
+        <div class="form-group">
+          <label for="expense-payment">Payment Method</label>
+          <select id="expense-payment">
+            <option value="Cash">Cash</option>
+            <option value="JazzCash">JazzCash</option>
+            <option value="Easypaisa">Easypaisa</option>
+            <option value="Bank">Bank</option>
+            <option value="Card">Card</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="expense-date">Date</label>
+          <input type="date" id="expense-date" required />
+        </div>
+        <p id="expense-error" class="form-error hidden" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Save Expense</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Income Modal -->
+  <div id="income-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="income-title">
+    <div class="modal glass">
+      <button type="button" class="modal-close" data-action="close-income" aria-label="Close">&times;</button>
+      <h2 id="income-title">Add Income</h2>
+      <form id="income-form">
+        <input type="hidden" id="income-id" />
+        <div class="form-group">
+          <label for="income-amount">Amount (₨)</label>
+          <input type="number" id="income-amount" min="1" step="1" required placeholder="10000" />
+        </div>
+        <div class="form-group">
+          <label for="income-category">Source</label>
+          <select id="income-category" required>
+            <option value="Pocket Money">Pocket Money</option>
+            <option value="Gift">Gift</option>
+            <option value="Freelancing">Freelancing</option>
+            <option value="Part-time Work">Part-time Work</option>
+            <option value="Scholarship">Scholarship</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="income-description">Description</label>
+          <input type="text" id="income-description" placeholder="Monthly allowance…" maxlength="120" />
+        </div>
+        <div class="form-group">
+          <label for="income-payment">Payment Method</label>
+          <select id="income-payment">
+            <option value="Cash">Cash</option>
+            <option value="JazzCash">JazzCash</option>
+            <option value="Easypaisa">Easypaisa</option>
+            <option value="Bank">Bank</option>
+            <option value="Card">Card</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="income-date">Date</label>
+          <input type="date" id="income-date" required />
+        </div>
+        <p id="income-error" class="form-error hidden" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Save Income</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Budget Modal -->
+  <div id="budget-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="budget-title">
+    <div class="modal glass">
+      <button type="button" class="modal-close" data-action="close-budget" aria-label="Close">&times;</button>
+      <h2 id="budget-title">Set Monthly Budget</h2>
+      <form id="budget-form">
+        <div class="form-group">
+          <label for="budget-amount">Budget amount (₨)</label>
+          <input type="number" id="budget-amount" min="1" step="1" required placeholder="15000" />
+        </div>
+        <p class="muted small">This applies to the current month.</p>
+        <p id="budget-error" class="form-error hidden" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Save Budget</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirm Delete -->
+  <div id="confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal glass modal-sm">
+      <h2>Delete transaction?</h2>
+      <p class="muted">This cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-action="cancel-delete">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden" aria-hidden="true">
+    <div class="spinner"></div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

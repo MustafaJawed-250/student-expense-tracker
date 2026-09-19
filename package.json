@@ -1,0 +1,28 @@
+{
+  "name": "student-spend",
+  "version": "1.0.0",
+  "description": "StudentSpend — Premium student expense tracker for Pakistan",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "expense-tracker",
+    "student",
+    "pakistan",
+    "pkr",
+    "supabase"
+  ],
+  "author": "StudentSpend",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
