@@ -1,15 +1,16 @@
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetch = require('node-fetch');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve frontend files from ../public
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -20,42 +21,41 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Public config (never expose secrets)
+// Public config
 app.get('/api/config', (req, res) => {
   res.json({
     supabaseUrl: process.env.SUPABASE_URL || '',
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
-    aiEnabled: !!(process.env.AI_API_KEY && process.env.AI_API_URL)
+    aiEnabled: !!(
+      process.env.AI_API_KEY &&
+      process.env.AI_API_URL
+    )
   });
 });
 
-// AI Insights endpoint — API key stays on server
+// AI Insights endpoint
 app.post('/api/ai/insights', async (req, res) => {
   try {
     const { summary } = req.body;
 
-    // Validate summary data
     if (!summary || typeof summary !== 'object') {
       return res.status(400).json({
         error: 'Missing or invalid summary data'
       });
     }
 
-    // Gemini configuration
     const apiKey = process.env.AI_API_KEY;
     const model = process.env.AI_MODEL || 'gemini-2.5-flash';
 
-    // Check API key
     if (!apiKey) {
       return res.json({
         insights: [
-          'AI insights are not configured yet. Add AI_API_KEY to your .env file.'
+          'AI insights are not configured yet. Add AI_API_KEY to your environment variables.'
         ],
         fallback: true
       });
     }
 
-    // Prompt for Gemini
     const prompt = `
 You are a friendly, non-judgmental financial coach for university students in Pakistan.
 
@@ -94,11 +94,9 @@ Return exactly this structure:
 }
 `;
 
-    // Gemini API URL
     const apiUrl =
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-    // Send request to Gemini
     const response = await fetch(apiUrl, {
       method: 'POST',
 
@@ -126,7 +124,6 @@ Return exactly this structure:
       })
     });
 
-    // Handle Gemini API error
     if (!response.ok) {
       const errorText = await response.text();
 
@@ -144,7 +141,6 @@ Return exactly this structure:
       });
     }
 
-    // Read Gemini response
     const data = await response.json();
 
     let content =
@@ -152,13 +148,11 @@ Return exactly this structure:
 
     console.log('Gemini response:', content);
 
-    // Remove Markdown code fences if Gemini adds them
     content = content
       .replace(/```json/gi, '')
       .replace(/```/g, '')
       .trim();
 
-    // Make sure Gemini actually returned something
     if (!content) {
       console.error('Gemini returned an empty response:', data);
 
@@ -172,7 +166,6 @@ Return exactly this structure:
 
     let parsed;
 
-    // Parse JSON returned by Gemini
     try {
       parsed = JSON.parse(content);
     } catch (error) {
@@ -186,7 +179,6 @@ Return exactly this structure:
       });
     }
 
-    // Validate insights array
     if (!parsed || !Array.isArray(parsed.insights)) {
       console.error('Invalid insights format:', parsed);
 
@@ -198,7 +190,6 @@ Return exactly this structure:
       });
     }
 
-    // Clean insights
     const insights = parsed.insights
       .filter(
         insight =>
@@ -208,7 +199,6 @@ Return exactly this structure:
       .map(insight => insight.trim())
       .slice(0, 6);
 
-    // If Gemini returned no usable insights
     if (insights.length === 0) {
       return res.json({
         insights: [
@@ -218,7 +208,6 @@ Return exactly this structure:
       });
     }
 
-    // Successful response
     return res.json({
       insights,
       fallback: false
@@ -235,11 +224,16 @@ Return exactly this structure:
     });
   }
 });
-// SPA fallback
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
-app.listen(PORT, () => {
-  console.log(`\n  StudentSpend is running at http://localhost:${PORT}\n`);
-});
+
+// Local development
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`StudentSpend is running at http://localhost:${PORT}`);
+  });
+}
+
+// Vercel
+module.exports = app;
