@@ -2,10 +2,10 @@
   "name": "student-spend",
   "version": "1.0.0",
   "description": "StudentSpend — Premium student expense tracker for Pakistan",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
-    "start": "node --watch api/server.js",
-    "dev": "node --watch server.js"
+    "start": "node api/server.js",
+    "dev": "node --watch api/server.js"
   },
   "keywords": [
     "expense-tracker",
@@ -23,6 +23,6 @@
     "node-fetch": "^2.7.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "22.x"
   }
 }
